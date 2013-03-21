@@ -3,12 +3,17 @@ use Rack::Static,
   :root => "public"
 
 run lambda { |env|
+  path = "public" + env["PATH_INFO"]
+  if path == "public/" 
+    path = "public/index.html"
+  end
+  puts env
   [
     200, 
     {
       'Content-Type'  => 'text/html', 
-      'Cache-Control' => 'public, max-age=86400' 
+      'Cache-Control' => 'public, max-age=10' 
     },
-    File.open('public/index.html', File::RDONLY)
+    File.open( path, File::RDONLY)
   ]
 }
